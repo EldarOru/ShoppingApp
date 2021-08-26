@@ -1,9 +1,9 @@
 package com.example.shoppingapp.domain
 
-class AddShopItemUseCase {
-    /*TODO()
-    fun addShopItem(shopItem:ShopItem){
+class AddShopItemUseCase (private val shopItemRepository: ShopItemRepository) {
 
+    fun addShopItem(shopItem:ShopItem){
+        shopItemRepository.addShopItem(shopItem)
     }
-     */
+
 }
