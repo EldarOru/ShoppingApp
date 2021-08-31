@@ -4,17 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.shoppingapp.domain.ShopItem
 import com.example.shoppingapp.domain.ShopItemRepository
-import java.util.*
 
 object ShopListRepositoryImpl: ShopItemRepository {
 
     private val shopListLiveData = MutableLiveData<List<ShopItem>>()
-    private val shopList:MutableList<ShopItem> = mutableListOf()
+    private val shopList = sortedSetOf<ShopItem>({o1,o2 -> o1.id.compareTo(o2.id)})
 
     private var autoIncrementId = 0
 
     init {
-        for (i in 0 until 10){
+        for (i in 0 until 100){
             val item = ShopItem("Name $i", i, true)
             addShopItem(item)
         }
@@ -39,13 +38,9 @@ object ShopListRepositoryImpl: ShopItemRepository {
     }
 
     override fun getShopItem(shopItemID: Int): ShopItem{
-        var shopItem:ShopItem? = null
-        for (ob in shopList){
-            if (ob.id == shopItemID){
-                shopItem == ob
-            }
-        }
-        return shopItem ?: throw Exception ("Element with id $shopItemID is not existed")
+        return shopList.find {
+            it.id == shopItemID
+        } ?: throw Exception ("Element with id $shopItemID is not existed")
     }
 
     override fun getShopList(): LiveData<List<ShopItem>> {
