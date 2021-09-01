@@ -12,6 +12,7 @@ import com.example.shoppingapp.domain.ShopItem
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
+
     private lateinit var llShopList:LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
