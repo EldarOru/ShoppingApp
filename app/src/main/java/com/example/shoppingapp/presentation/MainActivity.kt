@@ -28,5 +28,12 @@ class MainActivity : AppCompatActivity() {
         val rvShopList = findViewById<RecyclerView>(R.id.rv_shop_list)
         shopListAdapter = ShopListAdapter()
         rvShopList.adapter = shopListAdapter
+
+        shopListAdapter.onShopItemLongClickListener = {
+            viewModel.changeShopItem(it)
+        }
+        shopListAdapter.onShopItemClickListener = {
+            Log.e("INFO", "Name ${it.name} and number ${it.count}")
+        }
     }
 }
