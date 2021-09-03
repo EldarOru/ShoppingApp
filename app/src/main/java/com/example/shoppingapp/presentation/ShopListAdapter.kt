@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingapp.R
 import com.example.shoppingapp.domain.ShopItem
@@ -11,7 +12,7 @@ import com.example.shoppingapp.domain.ShopItem
 //Если сделать определенные View другого цвета (исходя из if), то при пролистывании вниз
 //некоторые View будут другого цвета, хотя не проходят if. Это связано с тем, что RecyclerView переиспользует
 //прошлые View
-class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
+class ShopListAdapter() : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
 
     var shopList = listOf<ShopItem>()
     set(value) {
@@ -23,6 +24,7 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
     var onShopItemClickListener: ((ShopItem) -> Unit)? = null
 
     //Как создавать View
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
         return if (viewType == ENABLED_NUM) {
             ShopItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_shop_enabled,

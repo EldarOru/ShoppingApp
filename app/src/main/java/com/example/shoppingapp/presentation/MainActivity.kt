@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingapp.R
 import com.example.shoppingapp.domain.ShopItem
@@ -22,18 +23,45 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.shopList.observe(this){
             shopListAdapter.shopList = it
+            //передает список в адаптер при каждом изменении
         }
     }
-    private fun setupRecycleView(){
+    private fun setupRecycleView() {
         val rvShopList = findViewById<RecyclerView>(R.id.rv_shop_list)
         shopListAdapter = ShopListAdapter()
         rvShopList.adapter = shopListAdapter
+        setupLongClickListener()
+        setupClickListener()
+        setupSwipeListener(rvShopList)
+    }
 
-        shopListAdapter.onShopItemLongClickListener = {
-            viewModel.changeShopItem(it)
-        }
+    private fun setupClickListener() {
         shopListAdapter.onShopItemClickListener = {
             Log.e("INFO", "Name ${it.name} and number ${it.count}")
         }
+    }
+
+    private fun setupLongClickListener() {
+        shopListAdapter.onShopItemLongClickListener = {
+            viewModel.changeShopItem(it)
+        }
+    }
+
+    private fun setupSwipeListener(recyclerView: RecyclerView) {
+        val myCallBack = object : ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
+            override fun onMove(recyclerView: RecyclerView,
+                                viewHolder: RecyclerView.ViewHolder,
+                                target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val item = shopListAdapter.shopList[viewHolder.adapterPosition]
+                viewModel.deleteShopItem(item)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(myCallBack)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 }
