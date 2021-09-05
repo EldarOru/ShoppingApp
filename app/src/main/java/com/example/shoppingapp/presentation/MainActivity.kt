@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
             //передает список в адаптер при каждом изменении
         }
     }
+
     private fun setupRecycleView() {
         val rvShopList = findViewById<RecyclerView>(R.id.rv_shop_list)
         shopListAdapter = ShopListAdapter()

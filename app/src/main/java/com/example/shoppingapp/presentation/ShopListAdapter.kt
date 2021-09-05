@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingapp.R
 import com.example.shoppingapp.domain.ShopItem
+import java.lang.RuntimeException
 
 //Если сделать определенные View другого цвета (исходя из if), то при пролистывании вниз
 //некоторые View будут другого цвета, хотя не проходят if. Это связано с тем, что RecyclerView переиспользует
@@ -24,18 +25,14 @@ class ShopListAdapter() : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolde
     var onShopItemClickListener: ((ShopItem) -> Unit)? = null
 
     //Как создавать View
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
-        return if (viewType == ENABLED_NUM) {
-            ShopItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_shop_enabled,
-                    parent,
-                    false))
-        }else {
-            ShopItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_shop_disabled,
-                    parent,
-                    false))
+        val layout = when(viewType){
+            DISABLED_NUM -> R.layout.item_shop_disabled
+            ENABLED_NUM -> R.layout.item_shop_enabled
+            else -> throw RuntimeException("Unknown view type: $viewType")
         }
-
+        val view = LayoutInflater.from(parent.context).inflate(layout,parent,false)
+        return ShopItemViewHolder(view)
     }
 
     //Как вставить значения внутри View
@@ -71,7 +68,6 @@ class ShopListAdapter() : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolde
     class ShopItemViewHolder(val view: View): RecyclerView.ViewHolder(view){
         val tvName = view.findViewById<TextView>(R.id.tv_name)
         val tvCount = view.findViewById<TextView>(R.id.tv_count)
-
     }
 
     companion object {
