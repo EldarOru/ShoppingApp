@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingapp.R
 import com.example.shoppingapp.domain.ShopItem
@@ -13,13 +15,19 @@ import java.lang.RuntimeException
 //Если сделать определенные View другого цвета (исходя из if), то при пролистывании вниз
 //некоторые View будут другого цвета, хотя не проходят if. Это связано с тем, что RecyclerView переиспользует
 //прошлые View
-class ShopListAdapter() : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
-
+class ShopListAdapter() : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCallback()) {
+    /*
     var shopList = listOf<ShopItem>()
     set(value) {
+        //field - изначальное значени, value - присвоенное
+        val callback = ShopListDiffCallback(shopList, value)
+        val diffResult = DiffUtil.calculateDiff(callback)
+        diffResult.dispatchUpdatesTo(this)
         field = value
-        notifyDataSetChanged()
+        //notifyDataSetChange полностью обновляет список
+        //а мы сделали так, чтобы обновлялись только меняющие поля
     }
+     */
 
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
     var onShopItemClickListener: ((ShopItem) -> Unit)? = null
@@ -37,7 +45,7 @@ class ShopListAdapter() : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolde
 
     //Как вставить значения внутри View
     override fun onBindViewHolder(holder: ShopItemViewHolder, position: Int) {
-        val shopItem = shopList[position]
+        val shopItem = getItem(position)
         holder.tvName.text = shopItem.name
         holder.tvCount.text = shopItem.count.toString()
         holder.view.setOnLongClickListener {
@@ -49,25 +57,11 @@ class ShopListAdapter() : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolde
         }
     }
 
-    override fun getItemCount(): Int {
-        return shopList.size
-    }
-
     //определяет enable у shopItem, на основании которого в onCreateViewHolder выбирается макет
     override fun getItemViewType(position: Int): Int {
-        return if (shopList[position].enabled){
+        return if (getItem(position).enabled){
             ENABLED_NUM
         }else DISABLED_NUM
-    }
-
-    //Класс, который хранит View
-    //Чтобы постоянно не вызывать findViewById
-    //Есть pull с view
-    //Всего создается n-ое количество view, где k<n будет видно на экране,
-    //а остальные будут вне экрана
-    class ShopItemViewHolder(val view: View): RecyclerView.ViewHolder(view){
-        val tvName = view.findViewById<TextView>(R.id.tv_name)
-        val tvCount = view.findViewById<TextView>(R.id.tv_count)
     }
 
     companion object {
