@@ -17,7 +17,7 @@ import com.google.android.material.textfield.TextInputLayout
 import java.lang.RuntimeException
 
 class ShopItemActivity : AppCompatActivity() {
-
+    /*
     private lateinit var viewModel: ShopItemViewModel
 
     private lateinit var tilName: TextInputLayout
@@ -28,9 +28,12 @@ class ShopItemActivity : AppCompatActivity() {
 
     private var screenMode = MODE_UNKNOWN
     private var shopItemId = ShopItem.UNDEFINED_ID
+
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_item)
+        /*
         parseIntent()
         viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
         initViews()
@@ -135,25 +138,26 @@ class ShopItemActivity : AppCompatActivity() {
         etCount = findViewById(R.id.et_count)
         buttonSave = findViewById(R.id.save_button)
     }
-
+*/}
     companion object {
-        private const val EXTRA_SCREEN_MODE = "extra_mode"
-        private const val EXTRA_SHOP_ITEM_ID = "extra_shop_item_id"
-        private const val MODE_ADD = "mode_add"
-        private const val MODE_CHANGE = "mode_change"
-        private const val MODE_UNKNOWN = ""
+            private const val EXTRA_SCREEN_MODE = "extra_mode"
+            private const val EXTRA_SHOP_ITEM_ID = "extra_shop_item_id"
+            private const val MODE_ADD = "mode_add"
+            private const val MODE_CHANGE = "mode_change"
+            private const val MODE_UNKNOWN = ""
 
-        fun newIntentAddItem(context: Context): Intent {
-            val intent = Intent(context, ShopItemActivity::class.java)
-            intent.putExtra(EXTRA_SCREEN_MODE, MODE_ADD)
-            return intent
+            fun newIntentAddItem(context: Context): Intent {
+                val intent = Intent(context, ShopItemActivity::class.java)
+                intent.putExtra(EXTRA_SCREEN_MODE, MODE_ADD)
+                return intent
+            }
+
+            fun newIntentChangeItem(context: Context, shopItemId: Int): Intent {
+                val intent = Intent(context, ShopItemActivity::class.java)
+                intent.putExtra(EXTRA_SCREEN_MODE, MODE_CHANGE)
+                intent.putExtra(EXTRA_SHOP_ITEM_ID, shopItemId)
+                return intent
+            }
         }
 
-        fun newIntentChangeItem(context: Context, shopItemId: Int): Intent{
-            val intent = Intent(context, ShopItemActivity::class.java)
-            intent.putExtra(EXTRA_SCREEN_MODE, MODE_CHANGE)
-            intent.putExtra(EXTRA_SHOP_ITEM_ID, shopItemId)
-            return intent
-        }
     }
-}
