@@ -22,6 +22,7 @@ class ShopItemFragment: Fragment() {
     //пустой конструктор, а его не будет и получится краш
 
     //нужно воспользоваться args
+    //фрагменты класс
     private lateinit var viewModel: ShopItemViewModel
 
     private lateinit var tilName: TextInputLayout
