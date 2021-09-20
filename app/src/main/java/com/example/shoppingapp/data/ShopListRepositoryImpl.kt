@@ -2,15 +2,16 @@ package com.example.shoppingapp.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.room.Room
 import com.example.shoppingapp.domain.ShopItem
 import com.example.shoppingapp.domain.ShopItemRepository
+import java.util.*
 import kotlin.random.Random
 
 object ShopListRepositoryImpl: ShopItemRepository {
 
     private val shopListLiveData = MutableLiveData<List<ShopItem>>()
     private val shopList = sortedSetOf<ShopItem>({o1,o2 -> o1.id.compareTo(o2.id)})
-
     private var autoIncrementId = 0
 
     init {
