@@ -1,5 +1,6 @@
 package com.example.shoppingapp.presentation
 
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +17,11 @@ import java.lang.RuntimeException
 //некоторые View будут другого цвета, хотя не проходят if. Это связано с тем, что RecyclerView переиспользует
 //прошлые View
 class ShopListAdapter() : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCallback()) {
+
     /*
     var shopList = listOf<ShopItem>()
     set(value) {
-        //field - изначальное значени, value - присвоенное
+        //field - изначальное значениe, value - присвоенное
         val callback = ShopListDiffCallback(shopList, value)
         val diffResult = DiffUtil.calculateDiff(callback)
         diffResult.dispatchUpdatesTo(this)

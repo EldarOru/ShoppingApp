@@ -25,5 +25,4 @@ class MainViewModel: ViewModel() {
         val newItem = shopItem.copy(enabled = !shopItem.enabled)
         changeShopItemUseCase.changeShopItem(newItem)
     }
-
 }
